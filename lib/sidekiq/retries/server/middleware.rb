@@ -14,7 +14,7 @@ module Sidekiq
         rescue Sidekiq::Retries::Retry => e
           # force a retry (for workers that have retries disabled)
           msg['retry'] ||= e.max_retries
-          attempt_retry(worker, msg, queue, e.cause)
+          attempt_retry(worker, msg, queue, e.cause, e.delay)
           raise e.cause
         rescue Sidekiq::Retries::Fail => e
           # don't retry this message (for workers that retry by default)
@@ -27,7 +27,7 @@ module Sidekiq
         private
 
         # This is the default Sidekiq 2.17.x retry logic
-        def attempt_retry(worker, msg, queue, e)
+        def attempt_retry(worker, msg, queue, e, delay=nil)
           max_retry_attempts = retry_attempts_from(msg['retry'], @max_retries)
 
           msg['queue'] = if msg['retry_queue']
@@ -54,7 +54,7 @@ module Sidekiq
           end
 
           if count < max_retry_attempts
-            delay = delay_for(worker, count)
+            delay ||= delay_for(worker, count)
             logger.debug { "Failure! Retry #{count} in #{delay} seconds" }
             retry_at = Time.now.to_f + delay
             payload = Sidekiq.dump_json(msg)

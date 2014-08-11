@@ -10,11 +10,12 @@ module Sidekiq
     end
 
     class Retry < RetryError
-      attr_accessor :max_retries
+      attr_accessor :max_retries, :delay
 
-      def initialize(cause, max_retries=nil, msg=nil)
+      def initialize(cause, max_retries=nil, msg=nil, delay=nil)
         super(cause, msg)
         self.max_retries = max_retries
+        self.delay = delay
       end
     end
 
