@@ -24,6 +24,9 @@ Add this line to your application's Gemfile:
 
         #if e.g. retries: true or retries: 10, skip it anyway
         raise Sidekiq::Retries::Fail.new(RuntimeError.new('whatever happened'))
+
+        #add delay option
+        raise Sidekiq::Retries::Fail.new(RuntimeError.new('whatever happened'), nil, nil, 24.hours)
       end
     end
 
@@ -34,3 +37,4 @@ Add this line to your application's Gemfile:
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
