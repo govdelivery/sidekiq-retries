@@ -26,7 +26,7 @@ module Sidekiq
 
         private
 
-        # This is the default Sidekiq 2.17.x retry logic
+        # This is the default Sidekiq 3.2.2x retry logic
         def attempt_retry(worker, msg, queue, e, delay=nil)
           max_retry_attempts = retry_attempts_from(msg['retry'], @max_retries)
 
@@ -35,7 +35,7 @@ module Sidekiq
                          else
                            queue
                          end
-          msg['error_message'] = e.message
+          msg['error_message'] = e.message[0..10_000]
           msg['error_class'] = e.class.name
           count = if msg['retry_count']
                     msg['retried_at'] = Time.now.to_f
