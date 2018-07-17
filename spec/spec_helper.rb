@@ -5,11 +5,6 @@ end
 
 require 'rspec'
 
-begin
-  require 'celluloid/test'
-rescue LoadError
-  # ignore, seems we're in Sidekiq 4
-end
 require 'sidekiq'
 require 'sidekiq/retries'
 require 'sidekiq/cli'
