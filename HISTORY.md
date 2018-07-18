@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.0
+* Add support for sidekiq >= 5
+
+## 0.4.0
+
 ## 0.3.0
 * stop cutting + pasting Sidekiq retry logic, which is now extracted into a method (https://github.com/mperham/sidekiq/pull/1928)
 * require sidekiq 3.2.4
